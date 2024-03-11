@@ -7,18 +7,20 @@ using namespace std;
 
 // Структура для хранения информации о кандидате
 struct Candidate {
-    string name;
-    int votes;
+    string name; // Имя кандидата
+    int votes;   // Количество голосов, полученных кандидатом
 
+    // Конструктор для установки имени кандидата и начального количества голосов
     Candidate(string n) {
         name = n;
         votes = 0;
     }
 };
 
-// Поиск длины самого длинного имени кандидата
+// Функция для определения длины самого длинного имени кандидата
 int candidatesLongestName(const vector<Candidate>& candidates) {
     int candidatesLongestNameLength = 0;
+    // Проходим по всем кандидатам и находим самое длинное имя
     for (const auto& candidate : candidates) {
         if (candidate.name.length() > candidatesLongestNameLength) {
             candidatesLongestNameLength = candidate.name.length();
@@ -27,10 +29,11 @@ int candidatesLongestName(const vector<Candidate>& candidates) {
     return candidatesLongestNameLength;
 }
 
-// Вывод результатов голосования
+// Функция для вывода результатов выборов
 void outputElection(const vector<Candidate>& candidates) {
     // Длина самого длинного имени кандидата
     int candidatesLongestNameLength = candidatesLongestName(candidates);
+    // Выводим информацию о самом длинном имени
     cout << "\nСамое длинное имя составляет " << candidatesLongestNameLength << " символов" << endl;
     cout << "\nРезультаты выборов:" << endl;
     // Верхняя разграничивающая строка
@@ -38,9 +41,11 @@ void outputElection(const vector<Candidate>& candidates) {
         cout << "@";
     }
     cout << endl;
-    // Вывод результатов
+    // Выводим результаты для каждого кандидата
     for (size_t i = 0; i < candidates.size(); i++) {
+        // Выводим номер кандидата, имя, количество голосов
         cout << "@ " << i + 1 << ". " << candidates[i].name << ": " << candidates[i].votes << " голосов";
+        // Выравниваем пробелами по длине самого длинного имени кандидата
         int neededSpacesAmount = candidatesLongestNameLength - candidates[i].name.length();
         for (int j = 0; j < neededSpacesAmount + 1; j++) {
             cout << " ";
@@ -55,9 +60,10 @@ void outputElection(const vector<Candidate>& candidates) {
 
 // Функция для проведения голосования
 void conductElection(vector<Candidate>& candidates) {
+    // Выводим заголовок для начала голосования
     cout << "Голосование за выбор главы!" << endl;
 
-    // Вывод списка кандидатов
+    // Выводим список кандидатов
     cout << "Кандидаты:" << endl;
     for (size_t i = 0; i < candidates.size(); i++) {
         cout << i + 1 << ". " << candidates[i].name << endl;
@@ -65,23 +71,25 @@ void conductElection(vector<Candidate>& candidates) {
 
     // Цикл голосования
     while (true) {
+        // Просим пользователя ввести номер кандидата, за которого он хочет проголосовать
         cout << "Введите номер кандидата, за которого хотите проголосовать (0 - завершение голосования): ";
         int choice;
         cin >> choice;
 
+        // Проверяем валидность выбора
         if (choice < 0 || choice > static_cast<int>(candidates.size())) {
             cout << "Недопустимый выбор!" << endl;
             continue;
         }
         else if (choice == 0) {
-            break;
+            break; // Завершаем голосование, если пользователь ввел 0
         }
 
-        // Увеличение количества голосов кандидата
+        // Увеличиваем количество голосов выбранного кандидата
         candidates[choice - 1].votes++;
     }
 
-    // Сортировка кандидатов по убыванию голосов
+    // Сортируем кандидатов по количеству голосов в порядке убывания
     sort(candidates.begin(), candidates.end(), [](const Candidate& a, const Candidate& b) {
         return a.votes > b.votes;
         });
